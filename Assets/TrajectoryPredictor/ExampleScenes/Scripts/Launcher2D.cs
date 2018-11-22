@@ -14,7 +14,7 @@ public class Launcher2D : MonoBehaviour {
 	//create a trajectory predictor in code
 	TrajectoryPredictor tp;
 	void Start(){
-		tp = gameObject.AddComponent<TrajectoryPredictor>();
+		tp = gameObject.GetComponent<TrajectoryPredictor>();
 		tp.predictionType = TrajectoryPredictor.predictionMode.Prediction2D;
 		tp.drawDebugOnPrediction = true;
 		tp.accuracy = 0.99f;
