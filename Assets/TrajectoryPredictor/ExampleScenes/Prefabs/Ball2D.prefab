@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5895490}
   - component: {fileID: 5094882}
   - component: {fileID: 11435384}
-  m_Layer: 9
+  - component: {fileID: 114540982072304816}
+  m_Layer: 0
   m_Name: Ball2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,3 +168,17 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 106400}
   m_IsPrefabAsset: 1
+--- !u!114 &114540982072304816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb1bd4b826ee894c977ff819a22c0b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _safeFloorLayer:
+    serializedVersion: 2
+    m_Bits: 1024

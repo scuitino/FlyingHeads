@@ -26,22 +26,11 @@ public class Launcher2D : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		//input stuff
-		if(Input.GetKeyDown(KeyCode.T))
-			launch = true;
-		if(Input.GetKey(KeyCode.Y))
-			launch = true;
-
+        // check fire input
 		if (launch) {
 			launch = false;
 			Launch();
-		}
-
-		//set line duration to delta time so that it only lasts the length of a frame
-		tp.debugLineDuration = Time.unscaledDeltaTime;
-		//tell the predictor to predict a 2d line. this will also cause it to draw a prediction line
-		//because drawDebugOnPredict is set to true
-		tp.Predict2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
+		}		
 
 		//this static method can be used as well to get line info without needing to have a component and such
 			//TrajectoryPredictor.GetPoints2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
@@ -84,5 +73,12 @@ public class Launcher2D : MonoBehaviour {
 
         float rot_z = Mathf.Atan2(tDirection.y, tDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
+
+        // predict
+        //set line duration to delta time so that it only lasts the length of a frame
+        tp.debugLineDuration = Time.unscaledDeltaTime;
+        //tell the predictor to predict a 2d line. this will also cause it to draw a prediction line
+        //because drawDebugOnPredict is set to true
+        tp.Predict2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
     }
 }
