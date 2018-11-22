@@ -3,16 +3,17 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Launcher2D : MonoBehaviour {
+    
+    [SerializeField, Header("Throw Variables")]
+    float _forceMultiplier;
+    public float force = 150f;
+    public GameObject objToLaunch;
+    public Transform launchPoint;
+    public Text infoText;
+    public bool launch;
 
-	public GameObject objToLaunch;
-	public Transform launchPoint;
-	public Text infoText;
-	public bool launch;
-	public float force = 150f;
-	public float moveSpeed = 1f;
-
-	//create a trajectory predictor in code
-	TrajectoryPredictor tp;
+    //create a trajectory predictor in code
+    TrajectoryPredictor tp;
 	void Start(){
 		tp = gameObject.GetComponent<TrajectoryPredictor>();
 		tp.predictionType = TrajectoryPredictor.predictionMode.Prediction2D;
@@ -30,18 +31,6 @@ public class Launcher2D : MonoBehaviour {
 			launch = true;
 		if(Input.GetKey(KeyCode.Y))
 			launch = true;
-		
-		if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-			transform.Rotate(new Vector3(0f, 0f, moveSpeed));
-		if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-			transform.Rotate(new Vector3(0f, 0f, -moveSpeed));
-		
-		if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-			force += moveSpeed / 10f;
-		if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-			force -= moveSpeed / 10f;
-
-		force = Mathf.Clamp(force, 1f, 20f);
 
 		if (launch) {
 			launch = false;
@@ -81,4 +70,19 @@ public class Launcher2D : MonoBehaviour {
 		lInst.transform.rotation = launchPoint.rotation;
 		rbi.velocity = launchPoint.right * force;
 	}
+
+    // update throw values
+    public void UpdateThrowData(Vector2 aVectorForce)
+    {
+        Vector2 tDirection = aVectorForce - (Vector2)CPlayer._instance.transform.position;
+        // update force
+       // Debug.Log(tDirection + "direc");
+        force = tDirection.magnitude * _forceMultiplier;
+        // update look rotation
+
+        tDirection.Normalize();
+
+        float rot_z = Mathf.Atan2(tDirection.y, tDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
+    }
 }

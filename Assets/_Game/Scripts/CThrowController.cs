@@ -6,8 +6,9 @@ using DigitalRubyShared;
 
 public class CThrowController : MonoBehaviour {
 
-    // throw values
-    //Vector2 _pressStartPosition, _pressEndPosition;
+    // launcher instance
+    [SerializeField]
+    Launcher2D _launcher;
 
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
@@ -33,28 +34,19 @@ public class CThrowController : MonoBehaviour {
     {
         if (gesture.State == GestureRecognizerState.Began)
         {
-            Debug.Log("empezo");
-            Debug.Log(gesture.FocusX + " x / y " + gesture.FocusY);
-            // set gesture start position
-            //_pressStartPosition = new Vector2(gesture.DeltaX, gesture.);
-            //DebugText("Long press began: {0}, {1}", gesture.FocusX, gesture.FocusY);
-            //BeginDrag(gesture.FocusX, gesture.FocusY);
+            Debug.Log("empezo");    
         }
         else if (gesture.State == GestureRecognizerState.Executing)
         {
-            Debug.Log(gesture.DistanceX + " x / y " + gesture.DistanceY);
-            //Debug.Log("continua");
-            //DebugText("Long press moved: {0}, {1}", gesture.FocusX, gesture.FocusY);
-            //DragTo(gesture.FocusX, gesture.FocusY);
+            // update throw data with touch position
+            Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
+            _launcher.UpdateThrowData(tWorldPos);
         }
         else if (gesture.State == GestureRecognizerState.Ended)
         {
             Debug.Log("termino");
-            Debug.Log(gesture.FocusX + " x / y " + gesture.FocusY);
-            // set gesture end position
-            //_pressEndPosition = new Vector2(gesture.FocusX, gesture.FocusY);
-            //DebugText("Long press end: {0}, {1}, delta: {2}, {3}", gesture.FocusX, gesture.FocusY, gesture.DeltaX, gesture.DeltaY);
-            //EndDrag(longPressGesture.VelocityX, longPressGesture.VelocityY);
+            // fire
+            _launcher.launch = true;
         }
     }
 
