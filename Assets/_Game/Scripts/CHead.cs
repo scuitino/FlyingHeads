@@ -25,6 +25,7 @@ public class CHead : MonoBehaviour {
             {
                 Debug.Log("safe floor touched");
                 CPlayer._instance.transform.position = this.transform.position;
+                CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);
                 Destroy(this.gameObject);
             }                
         }        

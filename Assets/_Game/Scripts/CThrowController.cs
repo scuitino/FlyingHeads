@@ -71,7 +71,8 @@ public class CThrowController : MonoBehaviour {
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
-        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null) // start throw only if the start position is on the throw zone
+        // start throw only if the start position is on the throw zone / is not a head flying / the player is on idle
+        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null && CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) 
         {
             if (gesture.State == GestureRecognizerState.Began)
             {
@@ -88,6 +89,33 @@ public class CThrowController : MonoBehaviour {
                 Debug.Log("termino");
                 // fire
                 _launcher.launch = true;
+                CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
+            }
+        }
+        else
+        {
+            if (CPlayer._instance.GetState() != CPlayer.PlayerState.WAITING)
+            {            
+                if (gesture.State == GestureRecognizerState.Began)
+                {
+                    Debug.Log("start walking");
+                }
+                else if (gesture.State == GestureRecognizerState.Executing)
+                {
+                    Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
+                    if (tWorldPos.x < transform.position.x) // move left
+                    {
+                        CPlayer._instance.MovePlayer(false);
+                    }
+                    else // move right
+                    {
+                        CPlayer._instance.MovePlayer(true);
+                    }
+                }
+                else if (gesture.State == GestureRecognizerState.Ended)
+                {
+                    Debug.Log("termino");
+                }
             }
         }
     }

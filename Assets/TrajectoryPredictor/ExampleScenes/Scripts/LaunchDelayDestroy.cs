@@ -9,6 +9,7 @@ public class LaunchDelayDestroy : MonoBehaviour {
 
 	IEnumerator DestroyCo(){
 		yield return new WaitForSeconds(7.5f);
-		Destroy(gameObject);
+        CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);
+        Destroy(gameObject);
 	}
 }

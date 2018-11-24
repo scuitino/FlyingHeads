@@ -1235,7 +1235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7efba31cebd43e409c171d1f5f141c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _proCamera: {fileID: 1620990337}
   _launcher: {fileID: 408659345}
+  _activeHead: {fileID: 0}
   _throwZone: {fileID: 1945057423}
   _throwZoneLayer:
     serializedVersion: 2
@@ -1251,6 +1253,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03063d56094b60c49b6bffd9899c8025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveSpeed: 18
+  _playerRB: {fileID: 1515421524}
+  _state: 0
 --- !u!1001 &1592863792
 Prefab:
   m_ObjectHideFlags: 0
@@ -1331,6 +1336,7 @@ GameObject:
   - component: {fileID: 1620990336}
   - component: {fileID: 1620990335}
   - component: {fileID: 1620990334}
+  - component: {fileID: 1620990337}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1369,7 +1375,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6.16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1398,6 +1404,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1620990337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1620990333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8c96e2cdc154e848a3d9fe62464d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraTargets:
+  - TargetTransform: {fileID: 1515421523}
+    TargetInfluenceH: 1
+    TargetInfluenceV: 1
+    TargetOffset: {x: 0, y: 2.5}
+  CenterTargetOnStart: 0
+  Axis: 0
+  UpdateType: 0
+  FollowHorizontal: 1
+  HorizontalFollowSmoothness: 0.05
+  FollowVertical: 1
+  VerticalFollowSmoothness: 0.05
+  OffsetX: 0
+  OffsetY: 0
+  IsRelativeOffset: 1
+  ZoomWithFOV: 0
+  IgnoreTimeScale: 0
+  CurrentZoomTriggerID: 0
+  IsCameraPositionLeftBounded: 0
+  IsCameraPositionRightBounded: 0
+  IsCameraPositionTopBounded: 0
+  IsCameraPositionBottomBounded: 0
+  GameCamera: {fileID: 1620990335}
 --- !u!1 &1819749808
 GameObject:
   m_ObjectHideFlags: 0
