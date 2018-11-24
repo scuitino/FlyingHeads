@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DigitalRubyShared;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public class CThrowController : MonoBehaviour {
 
     #region SINGLETON PATTERN
     public static CThrowController _instance = null;
     #endregion
+
+    // 2D camera
+    public ProCamera2D _proCamera;
 
     // launcher instance
     [SerializeField]
@@ -42,6 +46,18 @@ public class CThrowController : MonoBehaviour {
 
         // show touches, only do this for debugging as it can interfere with other canvases
         FingersScript.Instance.ShowTouches = true;
+    }
+
+    private void Update()
+    {
+        if (_activeHead == null)
+        {
+            _proCamera.CameraTargets[0].TargetTransform = this.transform;
+        }
+        else
+        {
+            _proCamera.CameraTargets[0].TargetTransform = _activeHead.transform;
+        }
     }
 
     // to know if the gesture start on the player
