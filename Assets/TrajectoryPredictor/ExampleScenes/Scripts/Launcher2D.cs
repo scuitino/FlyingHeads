@@ -52,7 +52,8 @@ public class Launcher2D : MonoBehaviour {
 			launchObjParent.name = "Launched Objects";
 		}
 		GameObject lInst = Instantiate (objToLaunch);
-		lInst.name = "Ball";
+        CThrowController._instance._activeHead = lInst;
+		lInst.name = "ActiveHead";
 		lInst.transform.SetParent(launchObjParent.transform);
 		Rigidbody2D rbi = lInst.GetComponent<Rigidbody2D> ();
 		lInst.transform.position = launchPoint.position;

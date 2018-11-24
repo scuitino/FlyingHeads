@@ -549,7 +549,7 @@ MonoBehaviour:
   predictionType: 2
   raycastMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 1079
   checkForCollision: 1
   debugLineMode: 2
   drawDebugOnStart: 0
@@ -1312,6 +1312,12 @@ Prefab:
       propertyPath: _forceMultiplier
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
+        type: 2}
+      propertyPath: objToLaunch
+      value: 
+      objectReference: {fileID: 1220994944156564, guid: e44fd11fba2679044b601a4821977223,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5880695b6ab144749b88e0080de42f54, type: 2}
   m_IsPrefabAsset: 0

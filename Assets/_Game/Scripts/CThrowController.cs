@@ -6,9 +6,16 @@ using DigitalRubyShared;
 
 public class CThrowController : MonoBehaviour {
 
+    #region SINGLETON PATTERN
+    public static CThrowController _instance = null;
+    #endregion
+
     // launcher instance
     [SerializeField]
     Launcher2D _launcher;
+
+    // to see if is a head in use
+    public GameObject _activeHead;
 
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
@@ -16,12 +23,21 @@ public class CThrowController : MonoBehaviour {
     // when the touch needs to start when you want to throw
     [SerializeField]
     GameObject _throwZone;
-
     [SerializeField]
     LayerMask _throwZoneLayer;
 
+    private void Awake()
+    {
+        //singleton check
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
+            Destroy(gameObject);
+    }
+
     private void Start()
     {
+        // init gesture listener
         CreateLongPressGesture();
 
         // show touches, only do this for debugging as it can interfere with other canvases
@@ -39,7 +55,7 @@ public class CThrowController : MonoBehaviour {
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
-        if (GestureIntersectsSprite(gesture, _throwZone)) // start throw only if the start position is on the throw zone
+        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null) // start throw only if the start position is on the throw zone
         {
             if (gesture.State == GestureRecognizerState.Began)
             {

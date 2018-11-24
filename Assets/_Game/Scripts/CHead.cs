@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CHead : MonoBehaviour {
 
+    // when the player can spawn
     [SerializeField]
     LayerMask _safeFloorLayer;
 
