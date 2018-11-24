@@ -17,13 +17,17 @@ public class CPlayer : MonoBehaviour {
     [SerializeField]
     GameObject _headSprite;
 
+    [SerializeField]
+    GameObject _spawnParticle;
+
     public enum PlayerState
     {
         IDLE,
         WALKING,
         FALLING,
         TARGETING,
-        WAITING        
+        WAITING,
+        SPAWNING
     }
 
     [SerializeField]
@@ -53,7 +57,7 @@ public class CPlayer : MonoBehaviour {
     {
         _state = aState;
         if (_state == PlayerState.IDLE)
-        {
+        {            
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
         }
@@ -73,6 +77,11 @@ public class CPlayer : MonoBehaviour {
         {
             CThrowController._instance.RemoveTarget(Launcher2D._instance.tp.hitInfo2D.collider.gameObject);
         }
+        else if (_state == PlayerState.SPAWNING)
+        {
+            _spawnParticle.SetActive(true);
+            SetState(PlayerState.IDLE);
+        }        
     }
 
     void StatesUpdate()
