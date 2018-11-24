@@ -14,12 +14,16 @@ public class CPlayer : MonoBehaviour {
     [SerializeField]
     Rigidbody2D _playerRB;
 
+    [SerializeField]
+    GameObject _headSprite;
+
     public enum PlayerState
     {
         IDLE,
         WALKING,
+        FALLING,
         TARGETING,
-        WAITING
+        WAITING        
     }
 
     [SerializeField]
@@ -51,18 +55,23 @@ public class CPlayer : MonoBehaviour {
         if (_state == PlayerState.IDLE)
         {
             _playerRB.drag = 0;
+            _headSprite.SetActive(true);
         }
         else if (_state == PlayerState.WALKING)
         {
             _playerRB.drag = 6;
         }
+        else if (_state == PlayerState.FALLING)
+        {
+            _playerRB.drag = 0;
+        }
         else if (_state == PlayerState.TARGETING)
         {
-
+            _headSprite.SetActive(false);
         }
         else if (_state == PlayerState.WAITING)
         {
-
+            CThrowController._instance.RemoveTarget(Launcher2D._instance.tp.hitInfo2D.collider.gameObject);
         }
     }
 
@@ -70,22 +79,38 @@ public class CPlayer : MonoBehaviour {
     {
         if (_state == PlayerState.IDLE)
         {
-            if (_playerRB.velocity.x != 0)
+            if (_playerRB.velocity.y != 0)
+            {
+                SetState(PlayerState.FALLING);
+            } else if (_playerRB.velocity.x != 0)
             {
                 SetState(PlayerState.WALKING);
-            }
+            }            
         }
         else if (_state == PlayerState.WALKING)
         {
-            Debug.Log(Mathf.Abs(_playerRB.velocity.x));
-            if (_playerRB.velocity.x == 0)
+            if (_playerRB.velocity.y != 0)
+            {
+                SetState(PlayerState.FALLING);
+            }
+            else if (_playerRB.velocity.x == 0)
+            {
+                SetState(PlayerState.IDLE);
+            }            
+        }
+        else if (_state == PlayerState.FALLING)
+        {
+            if (_playerRB.velocity.y == 0)
             {
                 SetState(PlayerState.IDLE);
             }
         }
         else if (_state == PlayerState.TARGETING)
         {
-
+            //if (Launcher2D._instance.tp.hitInfo2D && Launcher2D._instance.tp.hitInfo2D.collider.gameObject != null) //  if is a second target
+            //{
+            //    CThrowController._instance.AddTarget(Launcher2D._instance.tp.hitInfo2D.collider.gameObject);
+            //}
         }
         else if (_state == PlayerState.WAITING)
         {

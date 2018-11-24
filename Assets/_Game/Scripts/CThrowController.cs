@@ -72,50 +72,54 @@ public class CThrowController : MonoBehaviour {
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
         // start throw only if the start position is on the throw zone / is not a head flying / the player is on idle
-        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null && CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) 
-        {
-            if (gesture.State == GestureRecognizerState.Began)
+        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null)
+        {            
+            if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) // if is idle
             {
-                Debug.Log("empezo");
-            }
-            else if (gesture.State == GestureRecognizerState.Executing)
-            {
-                // update throw data with touch position
-                Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
-                _launcher.UpdateThrowData(tWorldPos);
-            }
-            else if (gesture.State == GestureRecognizerState.Ended)
-            {
-                Debug.Log("termino");
-                // fire
-                _launcher.launch = true;
-                CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
-            }
-        }
-        else
-        {
-            if (CPlayer._instance.GetState() != CPlayer.PlayerState.WAITING)
-            {            
                 if (gesture.State == GestureRecognizerState.Began)
                 {
-                    Debug.Log("start walking");
+                    Debug.Log("empezo");
+                    CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
                 }
-                else if (gesture.State == GestureRecognizerState.Executing)
+            }
+            else if (CPlayer._instance.GetState() == CPlayer.PlayerState.TARGETING) // if is targeting
+            { 
+                if (gesture.State == GestureRecognizerState.Executing)
                 {
+                    // update throw data with touch position
                     Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
-                    if (tWorldPos.x < transform.position.x) // move left
-                    {
-                        CPlayer._instance.MovePlayer(false);
-                    }
-                    else // move right
-                    {
-                        CPlayer._instance.MovePlayer(true);
-                    }
+                    _launcher.UpdateThrowData(tWorldPos);
                 }
                 else if (gesture.State == GestureRecognizerState.Ended)
                 {
                     Debug.Log("termino");
+                    // fire
+                    _launcher.launch = true;
+                    CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
                 }
+            }
+        }
+        else if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE || CPlayer._instance.GetState() == CPlayer.PlayerState.WALKING) // if is on idle or walking
+        { 
+            if (gesture.State == GestureRecognizerState.Began)
+            {
+                Debug.Log("start walking");                    
+            }
+            else if (gesture.State == GestureRecognizerState.Executing)
+            {
+                Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
+                if (tWorldPos.x < transform.position.x) // move left
+                {
+                    CPlayer._instance.MovePlayer(false);
+                }
+                else // move right
+                {
+                    CPlayer._instance.MovePlayer(true);
+                }
+            }
+            else if (gesture.State == GestureRecognizerState.Ended)
+            {
+                Debug.Log("termino de caminar");
             }
         }
     }
@@ -128,5 +132,17 @@ public class CThrowController : MonoBehaviour {
         _longPressGesture.StateUpdated += LongPressGestureCallback;
         _longPressGesture.MinimumDurationSeconds = 0;
         FingersScript.Instance.AddGesture(_longPressGesture);
+    }
+
+    // add one object to camera target
+    public void AddTarget(GameObject aTarget)
+    {
+        _proCamera.AddCameraTarget(aTarget.transform);
+    }
+
+    // remove one object to camera target
+    public void RemoveTarget(GameObject aTarget)
+    {
+        _proCamera.RemoveCameraTarget(aTarget.transform);
     }
 }

@@ -3,7 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Launcher2D : MonoBehaviour {
-    
+
+    #region SINGLETON PATTERN
+    public static Launcher2D _instance = null;
+    #endregion
+
     [SerializeField, Header("Throw Variables")]
     float _forceMultiplier;
     public float force = 150f;
@@ -13,7 +17,17 @@ public class Launcher2D : MonoBehaviour {
     public bool launch;
 
     //create a trajectory predictor in code
-    TrajectoryPredictor tp;
+    public TrajectoryPredictor tp;
+
+    private void Awake()
+    {
+        //singleton check
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
+            Destroy(gameObject);
+    }
+    
 	void Start(){
 		tp = gameObject.GetComponent<TrajectoryPredictor>();
 		tp.predictionType = TrajectoryPredictor.predictionMode.Prediction2D;
@@ -81,5 +95,5 @@ public class Launcher2D : MonoBehaviour {
         //tell the predictor to predict a 2d line. this will also cause it to draw a prediction line
         //because drawDebugOnPredict is set to true
         tp.Predict2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
-    }
+    }   
 }
