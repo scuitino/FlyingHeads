@@ -24,12 +24,6 @@ public class CThrowController : MonoBehaviour {
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
 
-    // when the touch needs to start when you want to throw
-    [SerializeField]
-    GameObject _throwZone;
-    [SerializeField]
-    LayerMask _throwZoneLayer;
-
     private void Awake()
     {
         //singleton check
@@ -61,18 +55,18 @@ public class CThrowController : MonoBehaviour {
     }
 
     // to know if the gesture start on the player
-    private bool GestureIntersectsSprite(DigitalRubyShared.GestureRecognizer g, GameObject obj)
-    {
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(g.StartFocusX, g.StartFocusY, -Camera.main.transform.position.z));
-        Collider2D col = Physics2D.OverlapPoint(worldPos, _throwZoneLayer);
-        return (col != null && col.gameObject != null && col.gameObject == obj);
-    }
+    //private bool GestureIntersectsSprite(DigitalRubyShared.GestureRecognizer g, GameObject obj)
+    //{
+    //    Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(g.StartFocusX, g.StartFocusY, -Camera.main.transform.position.z));
+    //    Collider2D col = Physics2D.OverlapPoint(worldPos, _throwZoneLayer);
+    //    return (col != null && col.gameObject != null && col.gameObject == obj);
+    //}
 
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
         // start throw only if the start position is on the throw zone / is not a head flying / the player is on idle
-        if (GestureIntersectsSprite(gesture, _throwZone) && _activeHead == null)
+        if (_activeHead == null)
         {            
             if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) // if is idle
             {
@@ -98,30 +92,7 @@ public class CThrowController : MonoBehaviour {
                     CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
                 }
             }
-        }
-        else if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE || CPlayer._instance.GetState() == CPlayer.PlayerState.WALKING) // if is on idle or walking
-        { 
-            if (gesture.State == GestureRecognizerState.Began)
-            {
-                Debug.Log("start walking");                    
-            }
-            else if (gesture.State == GestureRecognizerState.Executing)
-            {
-                Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
-                if (tWorldPos.x < transform.position.x) // move left
-                {
-                    CPlayer._instance.MovePlayer(false);
-                }
-                else // move right
-                {
-                    CPlayer._instance.MovePlayer(true);
-                }
-            }
-            else if (gesture.State == GestureRecognizerState.Ended)
-            {
-                Debug.Log("termino de caminar");
-            }
-        }
+        }        
     }
 
     // init the long press gesture

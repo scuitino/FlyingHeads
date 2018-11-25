@@ -23,7 +23,6 @@ public class CPlayer : MonoBehaviour {
     public enum PlayerState
     {
         IDLE,
-        WALKING,
         FALLING,
         TARGETING,
         WAITING,
@@ -61,10 +60,6 @@ public class CPlayer : MonoBehaviour {
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
         }
-        else if (_state == PlayerState.WALKING)
-        {
-            _playerRB.drag = 6;
-        }
         else if (_state == PlayerState.FALLING)
         {
             _playerRB.drag = 0;
@@ -88,24 +83,7 @@ public class CPlayer : MonoBehaviour {
     {
         if (_state == PlayerState.IDLE)
         {
-            if (_playerRB.velocity.y != 0)
-            {
-                SetState(PlayerState.FALLING);
-            } else if (_playerRB.velocity.x != 0)
-            {
-                SetState(PlayerState.WALKING);
-            }            
-        }
-        else if (_state == PlayerState.WALKING)
-        {
-            if (_playerRB.velocity.y != 0)
-            {
-                SetState(PlayerState.FALLING);
-            }
-            else if (_playerRB.velocity.x == 0)
-            {
-                SetState(PlayerState.IDLE);
-            }            
+        
         }
         else if (_state == PlayerState.FALLING)
         {
@@ -124,19 +102,6 @@ public class CPlayer : MonoBehaviour {
         else if (_state == PlayerState.WAITING)
         {
 
-        }
-    }
-
-    // false = left, true = right
-    public void MovePlayer(bool aSide)
-    {
-        if (aSide) // move right
-        {
-            _playerRB.AddForce(new Vector2(_moveSpeed, 0));
-        }
-        else // move left
-        {
-            _playerRB.AddForce(new Vector2(-_moveSpeed, 0));
         }
     }
 }
