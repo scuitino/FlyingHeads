@@ -14,6 +14,9 @@ public class CThrowController : MonoBehaviour {
     // 2D camera
     public ProCamera2D _proCamera;
 
+    [SerializeField]
+    float _camMaxXDif;
+
     // launcher instance
     [SerializeField]
     Launcher2D _launcher;
@@ -21,6 +24,9 @@ public class CThrowController : MonoBehaviour {
     // to see if is a head in use
     public GameObject _activeHead;
 
+    // to adjust camera when targeting
+    public GameObject _secondCameraTarget;
+        
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
 
@@ -79,9 +85,26 @@ public class CThrowController : MonoBehaviour {
             else if (CPlayer._instance.GetState() == CPlayer.PlayerState.TARGETING) // if is targeting
             { 
                 if (gesture.State == GestureRecognizerState.Executing)
-                {
+                {                  
+                    // get touch position                    
+                    Vector3 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
+
+                    // update camera position
+                    Vector3 tSecondTargetPosition = this.transform.position - (-(this.transform.position - tWorldPos) * 2);
+                    _secondCameraTarget.transform.position = new Vector3(tSecondTargetPosition.x, this.transform.position.y, 0);
+
+                    //_secondCameraTarget.transform.position = this.transform.position - (-(this.transform.position - tWorldPos) * 2);
+
+                    if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif)
+                    {                        
+                        _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);
+                    }
+                    else if (_secondCameraTarget.transform.localPosition.x < -_camMaxXDif)
+                    {
+                        _secondCameraTarget.transform.localPosition = new Vector3(-_camMaxXDif, 0, 0);
+                    }
+
                     // update throw data with touch position
-                    Vector2 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
                     _launcher.UpdateThrowData(tWorldPos);
                 }
                 else if (gesture.State == GestureRecognizerState.Ended)
@@ -103,17 +126,5 @@ public class CThrowController : MonoBehaviour {
         _longPressGesture.StateUpdated += LongPressGestureCallback;
         _longPressGesture.MinimumDurationSeconds = 0;
         FingersScript.Instance.AddGesture(_longPressGesture);
-    }
-
-    // add one object to camera target
-    public void AddTarget(GameObject aTarget)
-    {
-        _proCamera.AddCameraTarget(aTarget.transform);
-    }
-
-    // remove one object to camera target
-    public void RemoveTarget(GameObject aTarget)
-    {
-        _proCamera.RemoveCameraTarget(aTarget.transform);
     }
 }

@@ -44,19 +44,23 @@ public class Launcher2D : MonoBehaviour {
 		if (launch) {
 			launch = false;
 			Launch();
-		}		
-
-		//this static method can be used as well to get line info without needing to have a component and such
-			//TrajectoryPredictor.GetPoints2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
-
-
-		//info text stuff
-		if(infoText){
-			//this will check if the predictor has a hitinfo and then if it does will update the onscreen text
-			//to say the name of the object the line hit;
-			if(tp.hitInfo2D)
-				infoText.text = "Hit Object: " + tp.hitInfo2D.collider.gameObject.name;
 		}
+
+        //this static method can be used as well to get line info without needing to have a component and such
+        //TrajectoryPredictor.GetPoints2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);
+
+
+        //info text stuff
+        //if(infoText){
+        //this will check if the predictor has a hitinfo and then if it does will update the onscreen text
+        //to say the name of the object the line hit;
+        if (tp.hitInfo2D)
+        {
+            //CThrowController._instance._secondCameraTarget.transform.position = tp.hitInfo2D.collider.transform.position;
+                //infoText.text = "Hit Object: " + tp.hitInfo2D.collider.gameObject.name;
+        }
+			
+		//}
 	}
 
 	GameObject launchObjParent;

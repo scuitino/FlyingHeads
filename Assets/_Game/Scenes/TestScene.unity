@@ -1521,14 +1521,14 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &856694833
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 856694832}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243490263574516118, guid: bfd907048c00d81449514962e2b13b9d,
     type: 2}
@@ -1536,7 +1536,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2766,7 +2766,7 @@ Prefab:
     - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
         type: 2}
       propertyPath: _forceMultiplier
-      value: 10
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
         type: 2}
@@ -2870,7 +2870,7 @@ MonoBehaviour:
   - TargetTransform: {fileID: 1515421523}
     TargetInfluenceH: 1
     TargetInfluenceV: 1
-    TargetOffset: {x: 0, y: 5.8}
+    TargetOffset: {x: 0, y: 3.52}
   CenterTargetOnStart: 0
   Axis: 0
   UpdateType: 0

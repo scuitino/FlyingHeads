@@ -70,12 +70,14 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.WAITING)
         {
-            CThrowController._instance.RemoveTarget(Launcher2D._instance.tp.hitInfo2D.collider.gameObject);
+            CThrowController._instance._proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);            
         }
         else if (_state == PlayerState.SPAWNING)
         {
+            CThrowController._instance._secondCameraTarget.transform.position = this.transform.position;
+            CThrowController._instance._proCamera.AddCameraTarget(CThrowController._instance._secondCameraTarget.transform);
             _spawnParticle.SetActive(true);
-            SetState(PlayerState.IDLE);
+            SetState(PlayerState.IDLE);            
         }        
     }
 
