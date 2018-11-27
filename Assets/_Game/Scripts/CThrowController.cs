@@ -30,6 +30,14 @@ public class CThrowController : MonoBehaviour {
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
 
+    // throw cancel zone
+    [SerializeField]
+    GameObject _cancelZone;
+
+    // cancel zone Layer
+    [SerializeField]
+    LayerMask _cancelZoneLayer;
+
     private void Awake()
     {
         //singleton check
@@ -61,12 +69,12 @@ public class CThrowController : MonoBehaviour {
     }
 
     // to know if the gesture start on the player
-    //private bool GestureIntersectsSprite(DigitalRubyShared.GestureRecognizer g, GameObject obj)
-    //{
-    //    Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(g.StartFocusX, g.StartFocusY, -Camera.main.transform.position.z));
-    //    Collider2D col = Physics2D.OverlapPoint(worldPos, _throwZoneLayer);
-    //    return (col != null && col.gameObject != null && col.gameObject == obj);
-    //}
+    private bool GestureIntersectsCancelZone(DigitalRubyShared.GestureRecognizer g, GameObject obj)
+    {
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(g.FocusX, g.FocusY, -Camera.main.transform.position.z));
+        Collider2D col = Physics2D.OverlapPoint(worldPos, _cancelZoneLayer);
+        return (col != null && col.gameObject != null && col.gameObject == obj);
+    }
 
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
@@ -110,9 +118,16 @@ public class CThrowController : MonoBehaviour {
                 else if (gesture.State == GestureRecognizerState.Ended)
                 {
                     Debug.Log("termino");
-                    // fire
-                    _launcher.launch = true;
-                    CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
+                    if (GestureIntersectsCancelZone(gesture, _cancelZone)) // cancel shoot
+                    {
+                        Debug.Log("solto en cancel zone");
+                        CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);
+                    }
+                    else
+                    {
+                        _launcher.launch = true;
+                        CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
+                    }                    
                 }
             }
         }        
