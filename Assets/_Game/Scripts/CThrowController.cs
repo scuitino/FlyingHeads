@@ -72,6 +72,25 @@ public class CThrowController : MonoBehaviour {
         return (col != null && col.gameObject != null && col.gameObject == obj);
     }
 
+    // switch between pan and targeting mode (true = targeting)
+    public void ChangeCameraMode(bool aMode)
+    {
+        if (aMode)
+        {
+            _proCamera.AddCameraTarget(CPlayer._instance.transform);
+            _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.AddCameraTarget(_secondCameraTarget.transform);
+            _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
+        }
+        else
+        {
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
+            _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
+            _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+        }
+    }
+
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
@@ -84,11 +103,8 @@ public class CThrowController : MonoBehaviour {
                 {                 
                     if (gesture.State == GestureRecognizerState.Began)
                     {
-                        _proCamera.AddCameraTarget(CPlayer._instance.transform);
-                        _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
-                        _proCamera.AddCameraTarget(_secondCameraTarget.transform);
-                        _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
-                        _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
+                        // enable camera targeting mode / disable pan
+                        ChangeCameraMode(true);
 
                         Debug.Log("empezo");
                         CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);

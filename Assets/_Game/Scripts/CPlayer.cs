@@ -58,11 +58,10 @@ public class CPlayer : MonoBehaviour {
         _state = aState;
         if (_state == PlayerState.IDLE)
         {
-            // enable pan
-            CThrowController._instance._proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
-            CThrowController._instance._proCamera.RemoveCameraTarget(CPlayer._instance.transform);
-            CThrowController._instance._proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+            // enable pan / disable camera targeting mode 
+            CThrowController._instance.ChangeCameraMode(false);           
 
+            // enable throw mode
             CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
