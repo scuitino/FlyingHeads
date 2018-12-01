@@ -31,9 +31,11 @@ public class CThrowController : MonoBehaviour {
     public Transform _throwZoneLimit;
     [SerializeField]
     float _throwZoneStartDistance;
-        
+
+    // add tap gesture
+    private TapGestureRecognizer tapGesture;
     // long press gesture instance
-    private LongPressGestureRecognizer _longPressGesture;
+    public LongPressGestureRecognizer _longPressGesture;
 
     // throw cancel zone
     [SerializeField]
@@ -54,7 +56,8 @@ public class CThrowController : MonoBehaviour {
 
     private void Start()
     {
-        // init gesture listener
+        // init gesture listeners
+        CreateTapGesture();
         CreateLongPressGesture();
 
         // show touches, only do this for debugging as it can interfere with other canvases
@@ -136,6 +139,7 @@ public class CThrowController : MonoBehaviour {
                     }
                     else
                     {
+                        _longPressGesture.MinimumDurationSeconds = 1f;
                         _launcher.launch = true;
                         CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
                     }                    
@@ -150,7 +154,26 @@ public class CThrowController : MonoBehaviour {
         _longPressGesture = new LongPressGestureRecognizer();
         _longPressGesture.MaximumNumberOfTouchesToTrack = 1;
         _longPressGesture.StateUpdated += LongPressGestureCallback;
-        _longPressGesture.MinimumDurationSeconds = 0;
+        _longPressGesture.MinimumDurationSeconds = 0f;
         FingersScript.Instance.AddGesture(_longPressGesture);
+    }
+
+    // tap callback
+    private void TapGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
+    {
+        if (gesture.State == GestureRecognizerState.Ended)
+        {
+            Debug.Log("si");
+            _activeHead.GetComponent<CHead>().PlayerTouch();            
+        }
+    }
+
+    // init tap gesture
+    private void CreateTapGesture()
+    {
+        tapGesture = new TapGestureRecognizer();
+        tapGesture.StateUpdated += TapGestureCallback;
+        //tapGesture.RequireGestureRecognizerToFail = doubleTapGesture;
+        FingersScript.Instance.AddGesture(tapGesture);
     }
 }

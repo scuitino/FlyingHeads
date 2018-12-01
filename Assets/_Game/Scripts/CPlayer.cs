@@ -56,7 +56,8 @@ public class CPlayer : MonoBehaviour {
     {
         _state = aState;
         if (_state == PlayerState.IDLE)
-        {            
+        {
+            CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
         }
