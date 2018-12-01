@@ -30,6 +30,10 @@ public class CHead : MonoBehaviour {
         //RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, this.GetComponent<CircleCollider2D>().radius + 0.1f);
         //Debug.DrawRay(transform.position, Vector2.down * (this.GetComponent<CircleCollider2D>().radius + 0.1f), Color.red);
 
+        // update second target position when head is active
+        CThrowController._instance._secondCameraTarget.transform.position = this.transform.position;
+
+        // decrese remember timers
         _pressButtonRemember -= Time.deltaTime;
         _lastFloorRemember -= Time.deltaTime;
     }
@@ -87,7 +91,7 @@ public class CHead : MonoBehaviour {
     public void Respawn()
     {
         Debug.Log("Respawn!");
-        CPlayer._instance.transform.position = _spawnPosition;
+        CPlayer._instance.transform.position = _spawnPosition;        
         CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
         Destroy(this.gameObject);
     }      

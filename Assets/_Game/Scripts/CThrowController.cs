@@ -64,18 +64,6 @@ public class CThrowController : MonoBehaviour {
         //FingersScript.Instance.ShowTouches = true;
     }
 
-    private void Update()
-    {
-        if (_activeHead == null)
-        {
-            _proCamera.CameraTargets[0].TargetTransform = this.transform;
-        }
-        else
-        {
-            _proCamera.CameraTargets[0].TargetTransform = _activeHead.transform;
-        }
-    }
-
     // to know if the gesture start on the player
     private bool GestureIntersectsCancelZone(DigitalRubyShared.GestureRecognizer g, GameObject obj)
     {

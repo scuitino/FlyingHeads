@@ -46,7 +46,9 @@ public class Launcher2D : MonoBehaviour {
 		if (launch) {
 			launch = false;
 			Launch();
-		}
+            CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = CThrowController._instance._activeHead.transform;
+            CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);
+        }
 
         //this static method can be used as well to get line info without needing to have a component and such
         //TrajectoryPredictor.GetPoints2D(launchPoint.position, launchPoint.right * force, Physics2D.gravity);

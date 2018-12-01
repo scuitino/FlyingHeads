@@ -71,12 +71,15 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.WAITING)
         {
-            CThrowController._instance._proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);            
+            
         }
         else if (_state == PlayerState.SPAWNING)
         {
+            // configure the camera when spawn
             CThrowController._instance._secondCameraTarget.transform.position = this.transform.position;
-            CThrowController._instance._proCamera.AddCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+            CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = this.transform;
+            CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);
+
             _spawnParticle.SetActive(true);
             SetState(PlayerState.IDLE);            
         }        
@@ -104,7 +107,7 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.WAITING)
         {
-
+           
         }
     }
 }
