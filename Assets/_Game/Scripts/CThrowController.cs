@@ -80,11 +80,20 @@ public class CThrowController : MonoBehaviour {
         {            
             if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) // if is idle
             {
-                if (gesture.State == GestureRecognizerState.Began)
-                {
-                    Debug.Log("empezo");
-                    CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
-                }
+                if (GestureIntersectsCancelZone(gesture, _cancelZone))
+                {                 
+                    if (gesture.State == GestureRecognizerState.Began)
+                    {
+                        _proCamera.AddCameraTarget(CPlayer._instance.transform);
+                        _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
+                        _proCamera.AddCameraTarget(_secondCameraTarget.transform);
+                        _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
+                        _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
+
+                        Debug.Log("empezo");
+                        CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
+                    }
+                }               
             }
             else if (CPlayer._instance.GetState() == CPlayer.PlayerState.TARGETING) // if is targeting
             { 
@@ -101,7 +110,7 @@ public class CThrowController : MonoBehaviour {
 
                     // update throw zone limit object
                     _throwZoneLimit.position = this.transform.position + (tWorldPos - this.transform.position).normalized * _throwZoneStartDistance;
-
+                    
                     if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif)
                     {                        
                         _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);

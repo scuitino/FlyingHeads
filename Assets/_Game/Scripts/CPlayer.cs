@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Com.LuisPedroFonseca.ProCamera2D;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,6 +58,11 @@ public class CPlayer : MonoBehaviour {
         _state = aState;
         if (_state == PlayerState.IDLE)
         {
+            // enable pan
+            CThrowController._instance._proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
+            CThrowController._instance._proCamera.RemoveCameraTarget(CPlayer._instance.transform);
+            CThrowController._instance._proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+
             CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
@@ -78,7 +84,7 @@ public class CPlayer : MonoBehaviour {
             // configure the camera when spawn
             CThrowController._instance._secondCameraTarget.transform.position = this.transform.position;
             CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = this.transform;
-            CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);
+            CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);            
 
             _spawnParticle.SetActive(true);
             SetState(PlayerState.IDLE);            
