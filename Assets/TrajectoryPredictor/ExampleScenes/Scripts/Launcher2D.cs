@@ -11,7 +11,7 @@ public class Launcher2D : MonoBehaviour {
     [SerializeField, Header("Throw Variables")]
     float _forceMultiplier;
     [SerializeField]
-    float _maxForce;
+    float _minForce, _maxForce;
     public float force = 150f;
     public GameObject objToLaunch;
     public Transform launchPoint;
@@ -89,7 +89,7 @@ public class Launcher2D : MonoBehaviour {
         Vector2 tDirection = aVectorForce - (Vector2)CThrowController._instance._throwZoneLimit.transform.position;// (Vector2)CPlayer._instance.transform.position;
         // update force
        // Debug.Log(tDirection + "direc");
-        force = tDirection.magnitude * _forceMultiplier;
+        force = tDirection.magnitude * _forceMultiplier + _minForce;
         if (force > _maxForce)
         {
             force = _maxForce;

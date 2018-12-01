@@ -3513,7 +3513,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1515421521}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.621, y: -8.937, z: 0}
+  m_LocalPosition: {x: 7.57, y: -7.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1401246144}
@@ -3557,7 +3557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _proCamera: {fileID: 1620990337}
-  _camMaxXDif: 4
+  _camMaxXDif: 9
   _launcher: {fileID: 408659345}
   _activeHead: {fileID: 0}
   _secondCameraTarget: {fileID: 1762513092}
@@ -3772,7 +3772,7 @@ Prefab:
     - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
         type: 2}
       propertyPath: _forceMultiplier
-      value: 7.2
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
         type: 2}
@@ -3783,7 +3783,12 @@ Prefab:
     - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
         type: 2}
       propertyPath: _maxForce
-      value: 17
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 114561227394390488, guid: 5880695b6ab144749b88e0080de42f54,
+        type: 2}
+      propertyPath: _minForce
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5880695b6ab144749b88e0080de42f54, type: 2}
@@ -3917,10 +3922,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pc2D: {fileID: 1620990337}
-  ZoomOutBorder: 0.31
-  ZoomInBorder: 0.15
-  ZoomInSmoothness: 0.1
-  ZoomOutSmoothness: 0.1
+  ZoomOutBorder: 0.33
+  ZoomInBorder: 0.28
+  ZoomInSmoothness: 0.3
+  ZoomOutSmoothness: 0.3
   MaxZoomInAmount: 1
   MaxZoomOutAmount: 4
   DisableWhenOneTarget: 1
