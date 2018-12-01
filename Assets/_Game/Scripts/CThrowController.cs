@@ -26,6 +26,11 @@ public class CThrowController : MonoBehaviour {
 
     // to adjust camera when targeting
     public GameObject _secondCameraTarget;
+
+    // throw zone start limit
+    public Transform _throwZoneLimit;
+    [SerializeField]
+    float _throwZoneStartDistance;
         
     // long press gesture instance
     private LongPressGestureRecognizer _longPressGesture;
@@ -53,7 +58,7 @@ public class CThrowController : MonoBehaviour {
         CreateLongPressGesture();
 
         // show touches, only do this for debugging as it can interfere with other canvases
-        FingersScript.Instance.ShowTouches = true;
+        //FingersScript.Instance.ShowTouches = true;
     }
 
     private void Update()
@@ -103,6 +108,9 @@ public class CThrowController : MonoBehaviour {
 
                     //_secondCameraTarget.transform.position = this.transform.position - (-(this.transform.position - tWorldPos) * 2);
 
+                    // update throw zone limit object
+                    _throwZoneLimit.position = this.transform.position + (tWorldPos - this.transform.position).normalized * _throwZoneStartDistance;
+
                     if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif)
                     {                        
                         _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);
@@ -113,7 +121,10 @@ public class CThrowController : MonoBehaviour {
                     }
 
                     // update throw data with touch position
-                    _launcher.UpdateThrowData(tWorldPos);
+                    if (!GestureIntersectsCancelZone(gesture, _cancelZone)) // only target if is outside the cancel zone
+                    {
+                        _launcher.UpdateThrowData(tWorldPos);
+                    }                    
                 }
                 else if (gesture.State == GestureRecognizerState.Ended)
                 {

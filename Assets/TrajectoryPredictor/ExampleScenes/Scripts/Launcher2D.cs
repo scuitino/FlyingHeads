@@ -10,6 +10,8 @@ public class Launcher2D : MonoBehaviour {
 
     [SerializeField, Header("Throw Variables")]
     float _forceMultiplier;
+    [SerializeField]
+    float _maxForce;
     public float force = 150f;
     public GameObject objToLaunch;
     public Transform launchPoint;
@@ -82,14 +84,17 @@ public class Launcher2D : MonoBehaviour {
     // update throw values
     public void UpdateThrowData(Vector2 aVectorForce)
     {
-        Vector2 tDirection = aVectorForce - (Vector2)CPlayer._instance.transform.position;
+        Vector2 tDirection = aVectorForce - (Vector2)CThrowController._instance._throwZoneLimit.transform.position;// (Vector2)CPlayer._instance.transform.position;
         // update force
        // Debug.Log(tDirection + "direc");
         force = tDirection.magnitude * _forceMultiplier;
+        if (force > _maxForce)
+        {
+            force = _maxForce;
+        }
+
         // update look rotation
-
         tDirection.Normalize();
-
         float rot_z = Mathf.Atan2(tDirection.y, tDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
 
