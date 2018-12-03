@@ -62,7 +62,7 @@ public class CPlayer : MonoBehaviour {
             CThrowController._instance.ChangeCameraMode(false);           
 
             // enable throw mode
-            CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
+           // CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
             _playerRB.drag = 0;
             _headSprite.SetActive(true);
         }

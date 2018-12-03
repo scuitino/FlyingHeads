@@ -230,7 +230,7 @@ MonoBehaviour:
   _safeFloorLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _pressButtonRememberTime: 0.4
+  _pressButtonRememberTime: 5
   _lastFloorRememberTime: 0.2
 --- !u!212 &212045589302705346
 SpriteRenderer:

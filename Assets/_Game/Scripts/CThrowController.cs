@@ -33,7 +33,7 @@ public class CThrowController : MonoBehaviour {
     float _throwZoneStartDistance;
 
     // add tap gesture
-    private TapGestureRecognizer tapGesture;
+    //private TapGestureRecognizer tapGesture;
     // long press gesture instance
     public LongPressGestureRecognizer _longPressGesture;
 
@@ -57,7 +57,7 @@ public class CThrowController : MonoBehaviour {
     private void Start()
     {
         // init gesture listeners
-        CreateTapGesture();
+        //CreateTapGesture();
         CreateLongPressGesture();
 
         // show touches, only do this for debugging as it can interfere with other canvases
@@ -152,13 +152,21 @@ public class CThrowController : MonoBehaviour {
                     }
                     else
                     {
-                        _longPressGesture.MinimumDurationSeconds = 1f;
+                        //_longPressGesture.MinimumDurationSeconds = 1f;
                         _launcher.launch = true;
                         CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
                     }                    
                 }
             }
-        }        
+        }
+        else // if is an active head
+        {
+            if (gesture.State == GestureRecognizerState.Began)
+            {
+                _activeHead.GetComponent<CHead>().PlayerTouch(); // respawn
+            }
+            
+        }
     }
 
     // init the long press gesture
@@ -171,22 +179,22 @@ public class CThrowController : MonoBehaviour {
         FingersScript.Instance.AddGesture(_longPressGesture);
     }
 
-    // tap callback
-    private void TapGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
-    {
-        if (gesture.State == GestureRecognizerState.Ended)
-        {
-            Debug.Log("si");
-            _activeHead.GetComponent<CHead>().PlayerTouch();            
-        }
-    }
+    //// tap callback
+    //private void TapGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
+    //{
+    //    if (gesture.State == GestureRecognizerState.Ended)
+    //    {
+    //        Debug.Log("si");
+    //        _activeHead.GetComponent<CHead>().PlayerTouch();            
+    //    }
+    //}
 
-    // init tap gesture
-    private void CreateTapGesture()
-    {
-        tapGesture = new TapGestureRecognizer();
-        tapGesture.StateUpdated += TapGestureCallback;
-        //tapGesture.RequireGestureRecognizerToFail = doubleTapGesture;
-        FingersScript.Instance.AddGesture(tapGesture);
-    }
+    //// init tap gesture
+    //private void CreateTapGesture()
+    //{
+    //    tapGesture = new TapGestureRecognizer();
+    //    tapGesture.StateUpdated += TapGestureCallback;
+    //    //tapGesture.RequireGestureRecognizerToFail = doubleTapGesture;
+    //    FingersScript.Instance.AddGesture(tapGesture);
+    //}
 }

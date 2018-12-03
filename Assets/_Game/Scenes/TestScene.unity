@@ -439,13 +439,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 52443938}
-  m_LocalRotation: {x: 0, y: -0, z: 0.004456914, w: 0.9999901}
-  m_LocalPosition: {x: -11.778, y: -0.48538, z: 0}
+  m_LocalRotation: {x: 0, y: -0, z: 0.018533964, w: 0.9998283}
+  m_LocalPosition: {x: -11.781, y: -0.60298, z: 0}
   m_LocalScale: {x: 25.291716, y: -1.2323127, z: 1}
   m_Children: []
   m_Father: {fileID: 1371573373}
   m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.51100004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.124}
 --- !u!61 &52443940
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1932,11 +1932,11 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 856694832}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243490263574516118, guid: bfd907048c00d81449514962e2b13b9d,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 99a3c85181fd6864480d2b4145638d32, type: 3}
+  m_audioClip: {fileID: 8300000, guid: dfaa194cb091ae446b5404f7dbd79ac8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3477,7 +3477,7 @@ GameObject:
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3562,7 +3562,7 @@ MonoBehaviour:
   _activeHead: {fileID: 0}
   _secondCameraTarget: {fileID: 1762513092}
   _throwZoneLimit: {fileID: 1368428071}
-  _throwZoneStartDistance: 1.5
+  _throwZoneStartDistance: 2
   _cancelZone: {fileID: 1873024088}
   _cancelZoneLayer:
     serializedVersion: 2
@@ -3867,7 +3867,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1620990333}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.13, y: 0, z: -10}
+  m_LocalPosition: {x: 7.7689214, y: -5.6770377, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3917,8 +3917,8 @@ MonoBehaviour:
   _pc2D: {fileID: 1620990337}
   ZoomOutBorder: 0.33
   ZoomInBorder: 0.28
-  ZoomInSmoothness: 0.3
-  ZoomOutSmoothness: 0.3
+  ZoomInSmoothness: 0.8
+  ZoomOutSmoothness: 0.8
   MaxZoomInAmount: 1
   MaxZoomOutAmount: 4
   DisableWhenOneTarget: 1
@@ -4531,7 +4531,7 @@ Transform:
   m_GameObject: {fileID: 1873024088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 14.5, y: 14.5, z: 14.5}
+  m_LocalScale: {x: 19.05, y: 19.05, z: 19.05}
   m_Children: []
   m_Father: {fileID: 1515421523}
   m_RootOrder: 4
@@ -4636,7 +4636,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1980357561}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.62, y: 24.35, z: 0}
+  m_LocalPosition: {x: -24.62, y: 26.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
