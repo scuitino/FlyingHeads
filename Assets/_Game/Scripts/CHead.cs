@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class CHead : MonoBehaviour {
 
-    // when the player can spawn
-    [SerializeField]
+    // where the player can spawn
+    [SerializeField, Header("Layers")]
     LayerMask _safeFloorLayer;
+
+    // layer that destroy the head
+    [SerializeField]
+    LayerMask _enemyLayer;
 
     // press touch remember
     float _pressButtonRemember;
 
     // the time that the pressed button will be remembered
-    [SerializeField]
+    [SerializeField, Header("Gameplay variables")]
     float _pressButtonRememberTime;
 
     // last touch floor remember
@@ -24,6 +28,26 @@ public class CHead : MonoBehaviour {
 
     // where spawn the body
     Vector2 _spawnPosition;
+
+    // time before respawn after death
+    [SerializeField]
+    float _deathRespawnDelay;
+
+    // particles
+    [SerializeField, Header("Particles")]
+    GameObject _deadParticle;
+    [SerializeField]
+    GameObject _flyingParticle;
+
+    [SerializeField, Header("Sounds")]
+    List<AudioClip> _SFX;
+
+    AudioSource _headASource;
+
+    private void Start()
+    {
+        _headASource = this.GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -54,7 +78,12 @@ public class CHead : MonoBehaviour {
                     _lastFloorRemember = _lastFloorRememberTime;
                 }                
             }                
-        }        
+        }
+
+        if ((_enemyLayer & 1 << collision.gameObject.layer) == 1 << collision.gameObject.layer) // if the head touch an enemy
+        {
+            StartCoroutine(Die()); // die motherfucker
+        }
     }
 
     // when player touch 
@@ -95,4 +124,20 @@ public class CHead : MonoBehaviour {
         CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
         Destroy(this.gameObject);
     }      
+
+    // when the player die!
+    public IEnumerator Die()
+    {
+        Debug.Log("You are dead!");
+        this.GetComponent<Rigidbody2D>().simulated = false;
+        this.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        _flyingParticle.SetActive(false);
+        _deadParticle.SetActive(true);
+        _headASource.clip = _SFX[0];
+        _headASource.Play();
+        yield return new WaitForSeconds(_deathRespawnDelay);
+        CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
+        CThrowController._instance.ReturnCamera();
+        Destroy(this.gameObject);
+    }
 }

@@ -18,7 +18,7 @@ TagManager:
   - SafeFloor
   - CancelZone
   - FinishHole
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Particles
+    uniqueID: 3070062521
     locked: 0

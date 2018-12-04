@@ -60,6 +60,9 @@ public class CThrowController : MonoBehaviour {
         //CreateTapGesture();
         CreateLongPressGesture();
 
+        // put camera on position
+        ReturnCamera();
+
         // show touches, only do this for debugging as it can interfere with other canvases
         //FingersScript.Instance.ShowTouches = true;
     }
@@ -89,6 +92,13 @@ public class CThrowController : MonoBehaviour {
             _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
             _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
         }
+    }
+
+    // to return camera to player position
+    [ContextMenu("Return to player")]
+    public void ReturnCamera()
+    {
+        _proCamera.CameraTargets[0].TargetTransform.position = CPlayer._instance.transform.position + Vector3.up * 3.5f;
     }
 
     // manage long press gesture
