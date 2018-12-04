@@ -33,7 +33,7 @@ public class CThrowController : MonoBehaviour {
     float _throwZoneStartDistance;
 
     // add tap gesture
-    private TapGestureRecognizer tapGesture;
+    //private TapGestureRecognizer tapGesture;
     // long press gesture instance
     public LongPressGestureRecognizer _longPressGesture;
 
@@ -57,8 +57,11 @@ public class CThrowController : MonoBehaviour {
     private void Start()
     {
         // init gesture listeners
-        CreateTapGesture();
+        //CreateTapGesture();
         CreateLongPressGesture();
+
+        // put camera on position
+        ReturnCamera();
 
         // show touches, only do this for debugging as it can interfere with other canvases
         //FingersScript.Instance.ShowTouches = true;
@@ -72,6 +75,32 @@ public class CThrowController : MonoBehaviour {
         return (col != null && col.gameObject != null && col.gameObject == obj);
     }
 
+    // switch between pan and targeting mode (true = targeting)
+    public void ChangeCameraMode(bool aMode)
+    {
+        if (aMode)
+        {
+            _proCamera.AddCameraTarget(CPlayer._instance.transform);
+            _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.AddCameraTarget(_secondCameraTarget.transform);
+            _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
+        }
+        else
+        {
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
+            _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
+            _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+        }
+    }
+
+    // to return camera to player position
+    [ContextMenu("Return to player")]
+    public void ReturnCamera()
+    {
+        _proCamera.CameraTargets[0].TargetTransform.position = CPlayer._instance.transform.position + Vector3.up * 3.5f;
+    }
+
     // manage long press gesture
     private void LongPressGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
     {
@@ -80,11 +109,17 @@ public class CThrowController : MonoBehaviour {
         {            
             if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) // if is idle
             {
-                if (gesture.State == GestureRecognizerState.Began)
-                {
-                    Debug.Log("empezo");
-                    CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
-                }
+                if (GestureIntersectsCancelZone(gesture, _cancelZone))
+                {                 
+                    if (gesture.State == GestureRecognizerState.Began)
+                    {
+                        // enable camera targeting mode / disable pan
+                        ChangeCameraMode(true);
+
+                        Debug.Log("empezo");
+                        CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
+                    }
+                }               
             }
             else if (CPlayer._instance.GetState() == CPlayer.PlayerState.TARGETING) // if is targeting
             { 
@@ -101,7 +136,7 @@ public class CThrowController : MonoBehaviour {
 
                     // update throw zone limit object
                     _throwZoneLimit.position = this.transform.position + (tWorldPos - this.transform.position).normalized * _throwZoneStartDistance;
-
+                    
                     if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif)
                     {                        
                         _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);
@@ -127,13 +162,21 @@ public class CThrowController : MonoBehaviour {
                     }
                     else
                     {
-                        _longPressGesture.MinimumDurationSeconds = 1f;
+                        //_longPressGesture.MinimumDurationSeconds = 1f;
                         _launcher.launch = true;
                         CPlayer._instance.SetState(CPlayer.PlayerState.WAITING);
                     }                    
                 }
             }
-        }        
+        }
+        else // if is an active head
+        {
+            if (gesture.State == GestureRecognizerState.Began)
+            {
+                _activeHead.GetComponent<CHead>().PlayerTouch(); // respawn
+            }
+            
+        }
     }
 
     // init the long press gesture
@@ -146,22 +189,22 @@ public class CThrowController : MonoBehaviour {
         FingersScript.Instance.AddGesture(_longPressGesture);
     }
 
-    // tap callback
-    private void TapGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
-    {
-        if (gesture.State == GestureRecognizerState.Ended)
-        {
-            Debug.Log("si");
-            _activeHead.GetComponent<CHead>().PlayerTouch();            
-        }
-    }
+    //// tap callback
+    //private void TapGestureCallback(DigitalRubyShared.GestureRecognizer gesture)
+    //{
+    //    if (gesture.State == GestureRecognizerState.Ended)
+    //    {
+    //        Debug.Log("si");
+    //        _activeHead.GetComponent<CHead>().PlayerTouch();            
+    //    }
+    //}
 
-    // init tap gesture
-    private void CreateTapGesture()
-    {
-        tapGesture = new TapGestureRecognizer();
-        tapGesture.StateUpdated += TapGestureCallback;
-        //tapGesture.RequireGestureRecognizerToFail = doubleTapGesture;
-        FingersScript.Instance.AddGesture(tapGesture);
-    }
+    //// init tap gesture
+    //private void CreateTapGesture()
+    //{
+    //    tapGesture = new TapGestureRecognizer();
+    //    tapGesture.StateUpdated += TapGestureCallback;
+    //    //tapGesture.RequireGestureRecognizerToFail = doubleTapGesture;
+    //    FingersScript.Instance.AddGesture(tapGesture);
+    //}
 }

@@ -81,12 +81,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c69c89bafd0a441b41a1f6f979f9a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceMultiplier: 0
+  _minForce: 0
+  _maxForce: 0
+  force: 5
   objToLaunch: {fileID: 106400, guid: c4cc2f075321880449af9da28a498686, type: 2}
   launchPoint: {fileID: 4356510225900632}
   infoText: {fileID: 0}
   launch: 0
-  force: 5
-  moveSpeed: 1
+  tp: {fileID: 0}
 --- !u!212 &212009938408479680
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Com.LuisPedroFonseca.ProCamera2D;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,8 +18,14 @@ public class CPlayer : MonoBehaviour {
     [SerializeField]
     GameObject _headSprite;
 
-    [SerializeField]
+    [SerializeField, Header("Particles")]
     GameObject _spawnParticle;
+
+    [SerializeField]
+    GameObject _shotParticle;
+
+    [SerializeField]
+    GameObject _noHeadParticle;
 
     public enum PlayerState
     {
@@ -57,9 +64,13 @@ public class CPlayer : MonoBehaviour {
         _state = aState;
         if (_state == PlayerState.IDLE)
         {
-            CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
+            // enable pan / disable camera targeting mode 
+            CThrowController._instance.ChangeCameraMode(false);           
+
+            // enable throw mode
+           // CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
             _playerRB.drag = 0;
-            _headSprite.SetActive(true);
+            _headSprite.SetActive(true);           
         }
         else if (_state == PlayerState.FALLING)
         {
@@ -71,7 +82,8 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.WAITING)
         {
-            
+            _shotParticle.SetActive(true);
+            _noHeadParticle.SetActive(true);
         }
         else if (_state == PlayerState.SPAWNING)
         {
@@ -80,7 +92,9 @@ public class CPlayer : MonoBehaviour {
             CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = this.transform;
             CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);
 
+            _noHeadParticle.SetActive(false);
             _spawnParticle.SetActive(true);
+            this.GetComponent<AudioSource>().Play();
             SetState(PlayerState.IDLE);            
         }        
     }
