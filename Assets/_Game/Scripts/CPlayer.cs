@@ -27,6 +27,9 @@ public class CPlayer : MonoBehaviour {
     [SerializeField]
     GameObject _noHeadParticle;
 
+    [SerializeField]
+    GameObject _deathParticlePrefab;
+
     public enum PlayerState
     {
         IDLE,
@@ -89,16 +92,24 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.SPAWNING)
         {
+            // death effects            
+            _noHeadParticle.SetActive(false);
+            _spawnParticle.SetActive(true);
+            this.GetComponent<AudioSource>().Play();
+
             // configure the camera when spawn
             CThrowController._instance._secondCameraTarget.transform.position = this.transform.position;
             CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = this.transform;
             CThrowController._instance._proCamera.CameraTargets[0].TargetOffset = new Vector2(0, 3.52f);
-
-            _noHeadParticle.SetActive(false);
-            _spawnParticle.SetActive(true);
-            this.GetComponent<AudioSource>().Play();
+            
             SetState(PlayerState.IDLE);            
         }        
+    }
+
+    // effects when player death
+    public void PlayPlayerDeathParticles()
+    {
+        Instantiate(_deathParticlePrefab, transform.position, Quaternion.identity);
     }
 
     void StatesUpdate()

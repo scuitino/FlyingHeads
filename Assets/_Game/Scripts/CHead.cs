@@ -116,7 +116,7 @@ public class CHead : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.down * (this.GetComponent<CircleCollider2D>().radius + 0.3f), Color.red);
         if (hit.collider != null)
         {
-            _spawnPosition = this.transform.position;
+            _spawnPosition = this.transform.position + new Vector3(0,-0.2f,0);
             return true;            
         }
         else
@@ -129,6 +129,7 @@ public class CHead : MonoBehaviour {
     public void Respawn()
     {
         Debug.Log("Respawn!");
+        CPlayer._instance.PlayPlayerDeathParticles();
         CPlayer._instance.transform.position = _spawnPosition;        
         CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
         Destroy(this.gameObject);
