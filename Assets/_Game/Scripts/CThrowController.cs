@@ -10,6 +10,13 @@ public class CThrowController : MonoBehaviour {
     #region SINGLETON PATTERN
     public static CThrowController _instance = null;
     #endregion
+        
+    // delay before return to player position when is no touching
+    [SerializeField, Header("Camera Config")]
+    float _delayBeforeCameraReturn;
+
+    [SerializeField]
+    float _cameraReturnTimer;
 
     // 2D camera
     public ProCamera2D _proCamera;
@@ -17,8 +24,21 @@ public class CThrowController : MonoBehaviour {
     [SerializeField]
     float _camMaxXDif;
 
+    public enum CameraState
+    {
+        PANNING,
+        TARGETING
+    }
+
+    CameraState _cameraState;
+
+    public CameraState GetState()
+    {
+        return _cameraState;
+    }
+
     // launcher instance
-    [SerializeField]
+    [SerializeField, Header("Gameplay")]
     Launcher2D _launcher;
 
     // to see if is a head in use
@@ -67,6 +87,55 @@ public class CThrowController : MonoBehaviour {
         //FingersScript.Instance.ShowTouches = true;
     }
 
+    private void Update()
+    {
+        CameraStatesUpdate();
+    }
+
+    // camera states Updates
+    public void CameraStatesUpdate()
+    {
+        if (_cameraState == CameraState.PANNING)
+        {
+            if (_proCamera.GetComponent<ProCamera2DPanAndZoom>().IsPanning) // if is panning reset timer
+            {
+                _cameraReturnTimer = 0;
+                return;
+            }
+
+            _cameraReturnTimer += Time.deltaTime;
+
+            if (_cameraReturnTimer >= _delayBeforeCameraReturn) // return camera
+            {
+                ReturnCamera();
+            }
+        }
+        else if (_cameraState == CameraState.TARGETING)
+        {
+
+        }
+    }
+
+    // change Camera state
+    public void CameraSetState(CameraState aState)
+    {
+        _cameraState = aState;
+        if (_cameraState == CameraState.PANNING)
+        {
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
+            _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
+            _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
+        }
+        else if (_cameraState == CameraState.TARGETING)
+        {
+            _proCamera.AddCameraTarget(CPlayer._instance.transform);
+            _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.AddCameraTarget(_secondCameraTarget.transform);
+            _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
+            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
+        }
+    }
+
     // to know if the gesture start on the player
     private bool GestureIntersectsCancelZone(DigitalRubyShared.GestureRecognizer g, GameObject obj)
     {
@@ -75,29 +144,11 @@ public class CThrowController : MonoBehaviour {
         return (col != null && col.gameObject != null && col.gameObject == obj);
     }
 
-    // switch between pan and targeting mode (true = targeting)
-    public void ChangeCameraMode(bool aMode)
-    {
-        if (aMode)
-        {
-            _proCamera.AddCameraTarget(CPlayer._instance.transform);
-            _proCamera.GetCameraTarget(CPlayer._instance.transform).TargetOffset = new Vector2(0, 3.52f);
-            _proCamera.AddCameraTarget(_secondCameraTarget.transform);
-            _proCamera.GetCameraTarget(_secondCameraTarget.transform).TargetOffset = new Vector2(0, 3.52f);
-            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = false;
-        }
-        else
-        {
-            _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
-            _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
-            _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
-        }
-    }
-
     // to return camera to player position
     [ContextMenu("Return to player")]
     public void ReturnCamera()
     {
+        _cameraReturnTimer = 0;
         _proCamera.CameraTargets[0].TargetTransform.position = CPlayer._instance.transform.position + Vector3.up * 3.5f;
     }
 
@@ -109,14 +160,16 @@ public class CThrowController : MonoBehaviour {
         {            
             if (CPlayer._instance.GetState() == CPlayer.PlayerState.IDLE) // if is idle
             {
+                _cameraReturnTimer = 0; // reset return timer if is touching the screen
+
                 if (GestureIntersectsCancelZone(gesture, _cancelZone))
                 {                 
                     if (gesture.State == GestureRecognizerState.Began)
                     {
                         // enable camera targeting mode / disable pan
-                        ChangeCameraMode(true);
+                        //ChangeCameraMode(true);
+                        CameraSetState(CameraState.TARGETING);
 
-                        Debug.Log("empezo");
                         CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
                     }
                 }               
@@ -154,10 +207,8 @@ public class CThrowController : MonoBehaviour {
                 }
                 else if (gesture.State == GestureRecognizerState.Ended)
                 {
-                    Debug.Log("termino");
                     if (GestureIntersectsCancelZone(gesture, _cancelZone)) // cancel shoot
                     {
-                        Debug.Log("solto en cancel zone");
                         CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);
                     }
                     else

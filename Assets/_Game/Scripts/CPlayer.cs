@@ -65,7 +65,8 @@ public class CPlayer : MonoBehaviour {
         if (_state == PlayerState.IDLE)
         {
             // enable pan / disable camera targeting mode 
-            CThrowController._instance.ChangeCameraMode(false);           
+            //CThrowController._instance.ChangeCameraMode(false);
+            CThrowController._instance.CameraSetState(CThrowController.CameraState.PANNING);
 
             // enable throw mode
            // CThrowController._instance._longPressGesture.MinimumDurationSeconds = 0f;
