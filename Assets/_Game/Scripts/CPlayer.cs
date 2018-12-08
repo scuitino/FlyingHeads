@@ -79,10 +79,11 @@ public class CPlayer : MonoBehaviour {
         }
         else if (_state == PlayerState.TARGETING)
         {
-            _headSprite.SetActive(false);
+            
         }
         else if (_state == PlayerState.WAITING)
         {
+            _headSprite.SetActive(false);
             _shotParticle.SetActive(true);
             _noHeadParticle.SetActive(true);
         }
