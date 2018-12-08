@@ -67,25 +67,16 @@ public class CHead : MonoBehaviour {
     {        
         if ((_safeFloorLayer & 1 << collision.gameObject.layer) == 1 << collision.gameObject.layer) // if the head touch a safe floor layer object
         {
-            Debug.Log("colisiono");
             if (CheckSafeFloor()) // check safe floor
             {
-                Debug.Log("safe floor");
                 if (_pressButtonRemember > 0) // if a button was touched before floor contact
                 {
-                    Debug.Log("remember mother fucker");
                     Respawn();
                 }
                 else // remember floor
                 {
-                    Debug.Log("start remember");
                     _lastFloorRemember = _lastFloorRememberTime;
                 }                
-            }
-            else
-            {
-                Debug.Log(collision.gameObject.name);
-                Debug.Log("NOOO safe floor");
             }
         }
 
@@ -129,13 +120,17 @@ public class CHead : MonoBehaviour {
     public void Respawn()
     {
         Debug.Log("Respawn!");
-        CPlayer._instance.PlayPlayerDeathParticles();
+        if (CPlayer._instance._bodyIsSafe)
+        {
+            CPlayer._instance.PlayPlayerDeathParticles();
+        }
+        
         CPlayer._instance.transform.position = _spawnPosition;        
         CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
         Destroy(this.gameObject);
     }      
 
-    // when the player die!
+    // when the player head die!
     public IEnumerator Die()
     {
         Debug.Log("You are dead!");
@@ -146,8 +141,18 @@ public class CHead : MonoBehaviour {
         _headASource.clip = _SFX[0];
         _headASource.Play();
         yield return new WaitForSeconds(_deathRespawnDelay);
-        CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
-        CThrowController._instance.ReturnCamera();
+
+        if (CPlayer._instance._bodyIsSafe) // if the body is safe
+        {
+            CPlayer._instance.SetState(CPlayer.PlayerState.SPAWNING);
+        }
+        else
+        { 
+            // change camera target before respawn
+            CThrowController._instance._proCamera.CameraTargets[0].TargetTransform = CPlayer._instance.transform;
+            CPlayer._instance.SetState(CPlayer.PlayerState.CHECKPOINT_RESPAWNING);
+        }
+        
         Destroy(this.gameObject);
     }
 }

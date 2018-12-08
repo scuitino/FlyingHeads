@@ -30,9 +30,10 @@ public class CThrowController : MonoBehaviour {
         TARGETING
     }
 
+    [SerializeField]
     CameraState _cameraState;
 
-    public CameraState GetState()
+    public CameraState GetCameraState()
     {
         return _cameraState;
     }
@@ -117,11 +118,11 @@ public class CThrowController : MonoBehaviour {
     }
 
     // change Camera state
-    public void CameraSetState(CameraState aState)
+    public void SetCameraState(CameraState aState)
     {
         _cameraState = aState;
         if (_cameraState == CameraState.PANNING)
-        {
+        {            
             _proCamera.GetComponent<ProCamera2DPanAndZoom>().enabled = true;
             _proCamera.RemoveCameraTarget(CPlayer._instance.transform);
             _proCamera.RemoveCameraTarget(CThrowController._instance._secondCameraTarget.transform);
@@ -168,7 +169,7 @@ public class CThrowController : MonoBehaviour {
                     {
                         // enable camera targeting mode / disable pan
                         //ChangeCameraMode(true);
-                        CameraSetState(CameraState.TARGETING);
+                        SetCameraState(CameraState.TARGETING);
 
                         CPlayer._instance.SetState(CPlayer.PlayerState.TARGETING);
                     }
@@ -209,7 +210,7 @@ public class CThrowController : MonoBehaviour {
                 {
                     if (GestureIntersectsCancelZone(gesture, _cancelZone)) // cancel shoot
                     {
-                        CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);
+                        CPlayer._instance.SetState(CPlayer.PlayerState.IDLE);                       
                     }
                     else
                     {
