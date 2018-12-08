@@ -64,20 +64,29 @@ public class CHead : MonoBehaviour {
 
     // when the head touch something
     private void OnCollisionEnter2D(Collision2D collision)
-    {
+    {        
         if ((_safeFloorLayer & 1 << collision.gameObject.layer) == 1 << collision.gameObject.layer) // if the head touch a safe floor layer object
-        {            
+        {
+            Debug.Log("colisiono");
             if (CheckSafeFloor()) // check safe floor
             {
+                Debug.Log("safe floor");
                 if (_pressButtonRemember > 0) // if a button was touched before floor contact
                 {
+                    Debug.Log("remember mother fucker");
                     Respawn();
                 }
                 else // remember floor
                 {
+                    Debug.Log("start remember");
                     _lastFloorRemember = _lastFloorRememberTime;
                 }                
-            }                
+            }
+            else
+            {
+                Debug.Log(collision.gameObject.name);
+                Debug.Log("NOOO safe floor");
+            }
         }
 
         if ((_enemyLayer & 1 << collision.gameObject.layer) == 1 << collision.gameObject.layer) // if the head touch an enemy
@@ -103,8 +112,8 @@ public class CHead : MonoBehaviour {
     public bool CheckSafeFloor()
     {
         // Cast a ray straight down.
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, (this.GetComponent<CircleCollider2D>().radius + 0.1f), _safeFloorLayer);
-        Debug.DrawRay(transform.position, Vector2.down * (this.GetComponent<CircleCollider2D>().radius + 0.1f), Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, (this.GetComponent<CircleCollider2D>().radius + 0.3f), _safeFloorLayer);
+        Debug.DrawRay(transform.position, Vector2.down * (this.GetComponent<CircleCollider2D>().radius + 0.3f), Color.red);
         if (hit.collider != null)
         {
             _spawnPosition = this.transform.position;

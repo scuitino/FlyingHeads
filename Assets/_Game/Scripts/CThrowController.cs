@@ -224,6 +224,7 @@ public class CThrowController : MonoBehaviour {
         {
             if (gesture.State == GestureRecognizerState.Began)
             {
+                Debug.Log("Touch");
                 _activeHead.GetComponent<CHead>().PlayerTouch(); // respawn
             }
             
