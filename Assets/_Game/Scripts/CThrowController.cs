@@ -150,6 +150,10 @@ public class CThrowController : MonoBehaviour {
     public void ReturnCamera()
     {
         _cameraReturnTimer = 0;
+        if (!_proCamera.CameraTargets[0].TargetTransform != CPlayer._instance.transform) // to fix the bug when camera target move the player
+        {
+            SetCameraState(CameraState.PANNING);
+        }
         _proCamera.CameraTargets[0].TargetTransform.position = CPlayer._instance.transform.position + Vector3.up * 3.5f;
     }
 
@@ -182,6 +186,16 @@ public class CThrowController : MonoBehaviour {
                     // get touch position                    
                     Vector3 tWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(gesture.FocusX, gesture.FocusY, -Camera.main.transform.position.z));
 
+                    // change player sprites orientation
+                    if (tWorldPos.x > CPlayer._instance.transform.position.x) // looking right
+                    {
+                        CPlayer._instance.UpdatePlayerOrientation(false);
+                    }
+                    else // looking left
+                    {
+                        CPlayer._instance.UpdatePlayerOrientation(true);
+                    }
+
                     // update camera position
                     Vector3 tSecondTargetPosition = this.transform.position - (-(this.transform.position - tWorldPos) * 2);
                     _secondCameraTarget.transform.position = new Vector3(tSecondTargetPosition.x, this.transform.position.y, 0);
@@ -191,13 +205,14 @@ public class CThrowController : MonoBehaviour {
                     // update throw zone limit object
                     _throwZoneLimit.position = this.transform.position + (tWorldPos - this.transform.position).normalized * _throwZoneStartDistance;
                     
-                    if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif)
-                    {                        
-                        _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);
-                    }
-                    else if (_secondCameraTarget.transform.localPosition.x < -_camMaxXDif)
+                    // limit second target distance
+                    if (_secondCameraTarget.transform.localPosition.x > _camMaxXDif) // targeting right
                     {
-                        _secondCameraTarget.transform.localPosition = new Vector3(-_camMaxXDif, 0, 0);
+                        _secondCameraTarget.transform.localPosition = new Vector3(_camMaxXDif, 0, 0);                        
+                    }
+                    else if (_secondCameraTarget.transform.localPosition.x < -_camMaxXDif) // targeting left
+                    {
+                        _secondCameraTarget.transform.localPosition = new Vector3(-_camMaxXDif, 0, 0);                        
                     }
 
                     // update throw data with touch position

@@ -84,6 +84,19 @@ public class CPlayer : MonoBehaviour {
         StatesUpdate();
     }
 
+    // to flip the sprites // true = right
+    public void UpdatePlayerOrientation(bool aOrientation)
+    {
+        if (aOrientation)
+        {
+            _artObjects.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            _artObjects.transform.localScale = new Vector3(-1, 1, 1);
+        }
+    }
+
     // when the player touch something
     private void OnCollisionEnter2D(Collision2D collision)
     {        
