@@ -67,6 +67,7 @@ public class Launcher2D : MonoBehaviour {
 		//}
 	}
 
+    // launch the head
 	GameObject launchObjParent;
 	void Launch(){
 		if(!launchObjParent){
@@ -79,9 +80,11 @@ public class Launcher2D : MonoBehaviour {
 		lInst.transform.SetParent(launchObjParent.transform);
 		Rigidbody2D rbi = lInst.GetComponent<Rigidbody2D> ();
 		lInst.transform.position = launchPoint.position;
-		lInst.transform.rotation = launchPoint.rotation;
+		lInst.transform.rotation = launchPoint.rotation;        
 		rbi.velocity = launchPoint.right * force;
-	}
+        rbi.AddTorque(Random.Range(-5,5));
+        lInst.GetComponent<CHead>().ChangeArtOrientation(Mathf.Sign(rbi.velocity.x));
+    }
 
     // update throw values
     public void UpdateThrowData(Vector2 aVectorForce)

@@ -33,11 +33,17 @@ public class CHead : MonoBehaviour {
     [SerializeField]
     float _deathRespawnDelay;
 
+    // sprites and stuff
+    [SerializeField, Header("Art")]
+    SpriteRenderer _headSprite;
+
     // particles
     [SerializeField, Header("Particles")]
     GameObject _deadParticle;
     [SerializeField]
     GameObject _flyingParticle;
+    [SerializeField]
+    Transform _bloodDripping;
 
     [SerializeField, Header("Sounds")]
     List<AudioClip> _SFX;
@@ -154,5 +160,16 @@ public class CHead : MonoBehaviour {
         }
         
         Destroy(this.gameObject);
+    }
+
+    // to fix the orientation of the head sprites
+    public void ChangeArtOrientation(float aOrientation)
+    {
+        Debug.Log(aOrientation);
+        if (aOrientation == -1)
+        {
+            _headSprite.flipY = true;
+            _bloodDripping.localPosition = new Vector3(_bloodDripping.localPosition.x, -_bloodDripping.localPosition.y, _bloodDripping.localPosition.z);
+        }
     }
 }

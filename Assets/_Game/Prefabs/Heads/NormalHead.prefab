@@ -153,7 +153,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1657130495495162}
   m_LocalRotation: {x: -0.5000001, y: 0.5, z: -0.5, w: 0.49999994}
-  m_LocalPosition: {x: 0, y: -0.288, z: 0.097}
+  m_LocalPosition: {x: 0, y: -0.338, z: 0.097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4119863429361204}
@@ -404,8 +404,10 @@ MonoBehaviour:
   _pressButtonRememberTime: 50
   _lastFloorRememberTime: 0.15
   _deathRespawnDelay: 1
+  _headSprite: {fileID: 212045589302705346}
   _deadParticle: {fileID: 1674494842558470}
   _flyingParticle: {fileID: 1657130495495162}
+  _bloodDripping: {fileID: 4216764658049666}
   _SFX:
   - {fileID: 8300000, guid: 8dfcae34791b3a447b81d6653208f596, type: 3}
 --- !u!198 &198137789762850596
