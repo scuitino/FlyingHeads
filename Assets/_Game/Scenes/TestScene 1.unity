@@ -3632,26 +3632,6 @@ Prefab:
       propertyPath: _proCamera
       value: 
       objectReference: {fileID: 1620990337}
-    - target: {fileID: 114021638624556742, guid: a37e72d17affd7247825f054bcd3a339,
-        type: 2}
-      propertyPath: _artObjects
-      value: 
-      objectReference: {fileID: 1100640192}
-    - target: {fileID: 114021638624556742, guid: a37e72d17affd7247825f054bcd3a339,
-        type: 2}
-      propertyPath: _enemyLayer.m_Bits
-      value: 8192
-      objectReference: {fileID: 0}
-    - target: {fileID: 61842800973008178, guid: a37e72d17affd7247825f054bcd3a339,
-        type: 2}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114021638624556742, guid: a37e72d17affd7247825f054bcd3a339,
-        type: 2}
-      propertyPath: _deathRespawnDelay
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a37e72d17affd7247825f054bcd3a339, type: 2}
   m_IsPrefabAsset: 0
@@ -3857,11 +3837,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1100640192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1762604747788650, guid: a37e72d17affd7247825f054bcd3a339,
-    type: 2}
-  m_PrefabInternal: {fileID: 937043457}
 --- !u!1 &1104968139
 GameObject:
   m_ObjectHideFlags: 0

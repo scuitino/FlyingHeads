@@ -156,6 +156,7 @@ public class CPlayer : MonoBehaviour {
             _noHeadParticle.SetActive(false);
             _spawnParticle.SetActive(true);
             _artObjects.SetActive(true);
+            _shotParticle.SetActive(false);
             this.GetComponent<AudioSource>().Play();
 
             // configure the camera when spawn

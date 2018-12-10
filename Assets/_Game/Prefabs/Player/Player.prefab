@@ -398,7 +398,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1854008296122020}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.59, y: -8.94, z: 0}
+  m_LocalPosition: {x: -0.56, y: 10.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4662628272052644}
@@ -731,9 +731,11 @@ MonoBehaviour:
   _lastRespawnPosition: {x: 0, y: 0, z: 0}
   _enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
-  _deathRespawnDelay: 0
+    m_Bits: 8192
+  _deathRespawnDelay: 1
+  _bodyIsSafe: 0
   _headSprite: {fileID: 1768915001797938}
+  _artObjects: {fileID: 1762604747788650}
   _spawnParticle: {fileID: 1913026977131334}
   _shotParticle: {fileID: 1027507265327602}
   _noHeadParticle: {fileID: 1995116181390856}
@@ -755,6 +757,7 @@ MonoBehaviour:
   _cameraReturnTimer: 0
   _proCamera: {fileID: 0}
   _camMaxXDif: 9
+  _cameraState: 0
   _launcher: {fileID: 114886437841994636}
   _activeHead: {fileID: 0}
   _secondCameraTarget: {fileID: 1210147988582906}
