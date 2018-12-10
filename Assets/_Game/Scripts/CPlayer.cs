@@ -53,6 +53,7 @@ public class CPlayer : MonoBehaviour {
         FALLING,
         TARGETING,
         WAITING,
+        BODY_DEAD,
         SPAWNING, //  when successfull spawn
         CHECKPOINT_RESPAWNING // when player and head both dead
     }
@@ -129,7 +130,7 @@ public class CPlayer : MonoBehaviour {
             _playerRB.simulated = true;
             _headSprite.SetActive(true);
             _artObjects.SetActive(true);
-            
+
         }
         else if (_state == PlayerState.FALLING)
         {
@@ -178,6 +179,10 @@ public class CPlayer : MonoBehaviour {
 
             SetState(PlayerState.IDLE);
         }
+        else if (_state == PlayerState.BODY_DEAD)
+        {
+
+        }
     }
 
     // effects when player death
@@ -193,6 +198,8 @@ public class CPlayer : MonoBehaviour {
         _playerRB.simulated = false;
         PlayPlayerDeathParticles();
         _artObjects.SetActive(false);
+
+        SetState(PlayerState.BODY_DEAD);
 
         // there is no active head
         if (CThrowController._instance._activeHead == null)
